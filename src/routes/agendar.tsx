@@ -14,7 +14,7 @@ import { TIMES } from "@/lib/site";
 
 export const Route = createFileRoute("/agendar")({
   validateSearch: (s: Record<string, unknown>): { servico?: string } =>
-    typeof s.servico === "string" ? { servico: s.servico } : {},
+    typeof s["servico"] === "string" ? { servico: s["servico"] as string } : {},
   head: () => ({
     meta: [
       { title: "Agendar consulta · Dra. Helena Martins" },
@@ -38,7 +38,7 @@ function Agendar() {
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!time) return toast.error("Escolha um horário.");
+    if (!time) { toast.error("Escolha um horário."); return; }
     const f = new FormData(e.currentTarget);
     setLoading(true);
     const { error } = await supabase.from("appointments").insert({
@@ -52,7 +52,7 @@ function Agendar() {
       message: String(f.get("message") ?? "").slice(0, 2000),
     });
     setLoading(false);
-    if (error) return toast.error("Não foi possível enviar. Tente novamente.");
+    if (error) { toast.error("Não foi possível enviar. Tente novamente."); return; }
     setDone(true);
   }
 

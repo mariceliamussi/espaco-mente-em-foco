@@ -35,7 +35,7 @@ function Contato() {
       message: String(f.get("message")).trim().slice(0, 3000),
     });
     setLoading(false);
-    if (error) return toast.error("Não foi possível enviar.");
+    if (error) { toast.error("Não foi possível enviar."); return; }
     toast.success("Mensagem enviada! Respondo em breve.");
     form.reset();
   }
